@@ -65,7 +65,7 @@ class ListsController extends Controller
 	{
 		$db = \Yii::$app->db;
 		$we_id = $_GET['we_id'];
-		$sql = "select * from message where we_id = '2'";
+		$sql = "select * from message where we_id = '$we_id'";
 		$command = $db->createCommand($sql)->queryAll();
 		// var_dump($command);die;
 		// $posts = $command
