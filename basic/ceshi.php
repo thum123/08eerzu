@@ -35,6 +35,10 @@ foreach($info as $k=>$v)
     {
         $con[1] = $v;
     }
+    elseif($v['type']==2&&$v['f_id']==0)
+    {
+        $con[2] = $v;
+    }
 }
 
 foreach($con as $k=>$v)
