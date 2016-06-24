@@ -91,98 +91,130 @@ class wechatCallbackapiTest
 		
 	}
 	
-	public function createMenu($info){
+public function createMenu($info){
         // echo 123;die;
-        $accessToken=$this->getAccesstoken(); 
+         $accessToken=$this->getAccesstoken();
         //return $info;die;
-        //$accessToken = "RIsY004XJScwRfq4UEUykmXB9JfCqr5Dm67U4gtIH42lnOnxoyrmuGHAi36Zp3OsThNzAFINgeHOiEhvzPNMxlznhbcXaw5w08f0tcggHC_hdnTY1qqFamZLVUkDIjLOLJUdABAUSD";
-		$url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$accessToken;
+        // $accessToken = "RIsY004XJScwRfq4UEUykmXB9JfCqr5Dm67U4gtIH42lnOnxoyrmuGHAi36Zp3OsThNzAFINgeHOiEhvzPNMxlznhbcXaw5w08f0tcggHC_hdnTY1qqFamZLVUkDIjLOLJUdABAUSD";
+    $url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$accessToken;
         // return $url;die;
         $data = "";
         $str = "";
-		  $data .= '
+        $reg = "";
+      $data .= '
                {';
         $data .= '
                   "button": [';
               foreach($info as $k=>$v){
                   if($v['type']==0)
                   {    
-                    $data.='{
-                            "name": "'.$v['data'].'", ';
-                     
-                          if(empty($v['son']))
-                     {
-                     	$data.='"sub_button": [
-                {
-                    "type": "scancode_waitmsg", 
-                    "name": "  ", 
-                    "key": "rselfmenu_0_0", 
-                    "sub_button": [ ]
-                }]';
-                     }
-                      else
-                      {
-                       $data.='
-                            "sub_button": [';
-                       foreach($v['son'] as $key=>$val){
-                          $str.='
-                                {
-                                    "type": "scancode_waitmsg", 
-                                    "name": "'.$val['data'].'", 
-                                    "key": "rselfmenu_0_0", 
-                                    "sub_button": [ ]
-                                },';
-                            }
-                      $data.=substr($str,0,strlen($str)-1); 
-                          $data.='
-                            ]
-                        }, 
-                    ';
-                      }
+                            $data.='{
+                                    "name": "'.$v['data'].'", ';
+                             
+                             if(empty($v['son']))
+                             {
+                                       $data.='"sub_button": [
+                                            {
+                                                "type": "scancode_waitmsg", 
+                                                "name": "Nothing to do!", 
+                                                "key": "rselfmenu_0_0", 
+                                                "sub_button": [ ]
+                                            }]},';
+                              }
+                              else
+                              {
+                                   $data.='
+                                        "sub_button": [';
+                                   foreach($v['son'] as $key=>$val){
+                                      $str.='
+                                            {
+                                                "type": "scancode_waitmsg", 
+                                                "name": "'.$val['data'].'", 
+                                                "key": "rselfmenu_0_0", 
+                                                "sub_button": [ ]
+                                            },';
+                                        }
+                                  $data.=substr($str,0,strlen($str)-1); 
+                                      $data.='
+                                        ]
+                                    } 
+                                ';
+                              }
                     
                   }elseif($v['type']==1){
                   
-                  $data.='{
-                            "name": "'.$v['data'].'", ';
-                     if(empty($v['son']))
-                     {
-                     	$data.='"sub_button": [
-                {
-                    "type": "scancode_waitmsg", 
-                    "name": "  ", 
-                    "key": "rselfmenu_0_0", 
-                    "sub_button": [ ]
-                }]';
-                     }
-                      else
-                      {
-                       $data.='
-                            "sub_button": [';
-                       foreach($v['son'] as $key=>$val){
-                          $str.='
-                                {
-                                    "type": "scancode_waitmsg", 
-                                    "name": "'.$val['data'].'", 
-                                    "key": "rselfmenu_0_0", 
-                                    "sub_button": [ ]
-                                },';
-                            }
-                      $data.=substr($str,0,strlen($str)-1); 
-                          $data.='
-                            ]
-                        }, 
-                    ';
-                      }
+                      $data.=',{
+                                 "name": "'.$v['data'].'", ';
+                              if(empty($v['son']))
+                              {
+                                     $data.='"sub_button": [
+                                    {
+                                        "type": "scancode_waitmsg", 
+                                        "name": "Nothing to do!", 
+                                        "key": "rselfmenu_0_0", 
+                                        "sub_button": [ ]
+                                    }]}';
+                              }
+                              elseif(!empty($v['son']))
+                              {
+                                   $data.='
+                                        "sub_button": [';
+                                   foreach($v['son'] as $keys=>$vals){
+                                      $reg.='
+                                            {
+                                                "type": "scancode_waitmsg", 
+                                                "name": "'.$vals['data'].'", 
+                                                "key": "rselfmenu_0_0", 
+                                                "sub_button": [ ]
+                                            },';
+                                        }
+                                  $data.=substr($reg,0,strlen($reg)-1); 
+                                      $data.='
+                                        ]
+                                    } 
+                                ';
+                        }
                      
+                  }elseif($v['type']==2){
+                       $data.=',{
+                                 "name": "'.$v['data'].'", ';
+                              if(empty($v['son']))
+                              {
+                                     $data.='"sub_button": [
+                                    {
+                                        "type": "scancode_waitmsg", 
+                                        "name": "Nothing to do!", 
+                                        "key": "rselfmenu_0_0", 
+                                        "sub_button": [ ]
+                                    }]}';
+                              }
+                              elseif(!empty($v['son']))
+                              {
+                                   $data.='
+                                        "sub_button": [';
+                                   foreach($v['son'] as $keys=>$vals){
+                                      $reg.='
+                                            {
+                                                "type": "scancode_waitmsg", 
+                                                "name": "'.$vals['data'].'", 
+                                                "key": "rselfmenu_0_0", 
+                                                "sub_button": [ ]
+                                            },';
+                                        }
+                                  $data.=substr($reg,0,strlen($reg)-1); 
+                                      $data.='
+                                        ]
+                                    } 
+                                ';
+                        }
                   }
-         
                  }
-      $data.=' }';
+      $data.='] }';
         // return $data;die;
-		 $json=$this->curlPost($url,$data,'POST');
-        return $json;
-        //echo $json;
-	}
+     $json=$this->curlPost($url,$data,'POST');
+         return $json;
+        // echo $json;
+  }
 	
 	
 
