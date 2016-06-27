@@ -105,6 +105,7 @@ public function createMenu($info){
         $data = "";
         $str = "";
         $reg = "";
+        $cha = "";
       $data .= '
                {';
         $data .= '
@@ -197,7 +198,7 @@ public function createMenu($info){
                                    $data.='
                                         "sub_button": [';
                                    foreach($v['son'] as $keys=>$vals){
-                                      $reg.='
+                                      $cha.='
                                             {
                                                 "type": "scancode_waitmsg", 
                                                 "name": "'.$vals['data'].'", 
@@ -205,7 +206,7 @@ public function createMenu($info){
                                                 "sub_button": [ ]
                                             },';
                                         }
-                                  $data.=substr($reg,0,strlen($reg)-1); 
+                                  $data.=substr($cha,0,strlen($cha)-1); 
                                       $data.='
                                         ]
                                     } 
