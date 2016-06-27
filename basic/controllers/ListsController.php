@@ -191,6 +191,10 @@ class ListsController extends Controller
 		    {
 		        $con[1] = $v;
 		    }
+		    elseif($v['type']==2&&$v['f_id']==0)
+		    {
+		        $con[2] = $v;
+		    }
 		}
 		// var_dump($con);die;
 		foreach($con as $k=>$v)
