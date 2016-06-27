@@ -89,9 +89,9 @@ class ListsController extends Controller
 		$str3 = $_GET['str3'];
 		// echo $str3;die;
 		// var_dump($data);die;
-		$zhu1name = isset($_GET['zhu1name'])?$_GET['zhu1name']:0;
-		$zhu2name = isset($_GET['zhu2name'])?$_GET['zhu2name']:0;
-		$zhu3name = isset($_GET['zhu3name'])?$_GET['zhu3name']:0;
+		$zhu1name = isset($_GET['zhu1name'])?$_GET['zhu1name']:"";
+		$zhu2name = isset($_GET['zhu2name'])?$_GET['zhu2name']:"";
+		$zhu3name = isset($_GET['zhu3name'])?$_GET['zhu3name']:"";
 		$arr = explode(',', $str);
 		$arr2 = explode(',', $str2);
 		$arr3 = explode(',', $str3);
@@ -99,21 +99,21 @@ class ListsController extends Controller
 		// var_dump($arr3);die();
 		// var_dump($arr);die;
 		//先把父级菜单进行入库
-		if($zhu1name!=0){
+		if(!empty($zhu1name)){
 			$zhu1 = "insert into menu values (null,'$zhu1name','123','0','0','$we_id')";
 			$command=$connection->createCommand($zhu1);
 			$command->execute();
 			$zhi1_id = $connection->getLastInsertID();
 
 		}
-		if($zhu2name!=0)
+		if(!empty($zhu2name))
 		{
 			$zhu2 = "insert into menu values (null,'$zhu2name','123','0','1','$we_id')";
 			$command=$connection->createCommand($zhu2);
 			$command->execute();
 			$zhi2_id = $connection->getLastInsertID();
 		}
-		if($zhu3name!=0)
+		if(!empty($zhu3name))
 		{
 			$zhu3 = "insert into menu values (null,'$zhu3name','123','0','2','$we_id')";
 			$command=$connection->createCommand($zhu3);
