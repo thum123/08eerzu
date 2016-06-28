@@ -68,16 +68,76 @@
         <div class="result-wrap">
         	<form action="">
 				<?php foreach($con as $k=>$v){?>
-				<p>主菜单:<input type="text" value="<?php echo $v['data']?>"></p>
+				<p onclick='change(<?php echo $v['me_id']?>)'>主菜单:&nbsp;&nbsp;&nbsp;<span id="s<?php echo $v['me_id']?>"><?php echo $v['data']?></span>
+                    <input type="text" value="<?php echo $v['data']?>" id="i<?php echo $v['me_id']?>" style="display:none;"
+                                        onblur="update(<?php echo $v['me_id']?>)"/>
+                    <a href="javascript:del(<?php echo $v['me_id']?>);">删除</a></p>
 					<?php foreach($v['son'] as $key=>$val){?>
-						<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--------<input type="text" value="<?php echo $val['data']?>"></p>
+						<p onclick='change(<?php echo $val['me_id']?>)'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--------
+                             <input type="text" value="<?php echo $val['data']?>" id="i<?php echo $val['me_id']?>" style="display:none;"
+                                        onblur="update(<?php echo $val['me_id']?>)"/>
+                            <span  id="s<?php echo $val['me_id']?>"><?php echo $val['data']?></span>
+                            <a href="javascript:del(<?php echo $val['me_id']?>);">删除</a></p>
 					<?php }?>
 				<?php }?>
-				<input type="submit" value="修改">
+				
 			</form>
         </div>
     </div>
+    <!--             <td id="{$v.f_id}" onclick='change({$v.f_id})'>
+                                    <input type="text" value="{$v.name}" id="i{$v.f_id}" style="display:none;"
+                                        onblur="update({$v.f_id})"/>
+                                    <span id="s{$v.f_id}">{$v.name}</span>
+                            </td> -->
     <!--/main-->
 </div>
 </body>
 </html>
+
+<script src="jq.js"></script>
+<script>
+    function del(id)
+    {
+        // alert(id);
+        $.get('index.php?r=lists/delmenu',{'id':id},function(msg){
+                // alert(msg);
+                if(msg!=0)
+                {
+                    window.location.reload();
+
+                }
+        },'json');
+    }
+function change(id)
+{
+    // alert(id);
+  document.getElementById('i'+id).style.display='block';
+  document.getElementById('s'+id).innerHTML='';
+}
+function update(id)
+{ 
+    // alert(id);
+  var val =document.getElementById('i'+id).value;
+  var xhr =new XMLHttpRequest();
+  xhr.open('get','index.php?r=lists/save&val=' + val + '&id=' + id);
+  xhr.send(null);
+  xhr.onreadystatechange=function()
+  {
+    if(xhr.readyState==4)
+    {
+        // alert(xhr.responseText);
+      if(xhr.responseText==1)
+      {
+        alert('成功');
+        document.getElementById('i'+id).style.display='none';
+        document.getElementById('s'+id).innerHTML = val;
+
+      }
+      else
+      {
+        alert('修改失败');
+      }
+    }
+  }
+}
+</script>
