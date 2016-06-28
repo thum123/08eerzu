@@ -209,6 +209,57 @@ class ListsController extends Controller
 
 		return $this->renderAjax('menu_lists',['con'=>$con]);
 	}
+	//删除菜单栏
+	public function actionDelmenu()
+	{
+		$arr = array();
+		$connection = \Yii::$app->db;
+		$me_id = $_GET['id'];
+		// echo $me_id;
+		$sql="select * from menu where f_id = '$me_id'";
+		$data = $connection->createCommand($sql) -> queryAll();
+		// var_dump($data);die;
+		if(empty($data))
+		{
+			$re = $connection->createCommand()->delete('menu', "me_id = $me_id")->execute();
+			if($re)
+			{
+				echo 1;
+			}
+		}
+		else
+		{
+			$connection->createCommand()->delete('menu', "me_id = $me_id")->execute();
+			foreach($data as $k=>$v)
+			{
+				$res = $connection->createCommand()->delete('menu', "me_id = $v[me_id]")->execute();
+				$arr[$k] = $v['me_id'];
 
+			}
+
+			if($res)
+			{
+				echo 1;
+			}
+		}
+	}
+
+	//修改自定义菜单栏
+	public function actionSave()
+	{
+		$connection = \Yii::$app->db;
+		$data['data'] = $_GET['val'];
+		$data['me_id'] = $_GET['id'];
+		// var_dump($data);
+		$res = $connection->createCommand()->update('menu', ['data' => $data['data']], "me_id = $data[me_id]")->execute();
+		if($res)
+		{
+			echo 1;
+		}
+		else
+		{
+			echo 0;
+		}
+	}
 
 }
